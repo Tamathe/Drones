@@ -49,6 +49,8 @@ td[contenteditable=true]{cursor:text}
 td[contenteditable=true]:focus{background:#f1f5f9;box-shadow:inset 0 0 0 1px #cbd5e1;border-radius:6px;outline:none}
 td[contenteditable=true]:empty::before{content:"…";color:#cbd5e1}
 table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
+.secname[contenteditable=true]{cursor:text}
+.secname[contenteditable=true]:focus{background:#eef2f7;box-shadow:inset 0 0 0 1px #cbd5e1;border-radius:6px;outline:none}
 @media(max-width:560px){.wrap{padding:14px 12px 48px}.hero{padding:20px}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -217,7 +219,17 @@ function render(){
   var mine=Object.keys(tasks).filter(function(tid){return tasks[tid].sid===sec.id;}).map(function(tid){return {id:tid,o:tasks[tid]};}).sort(function(a,b){return (a.o.order||0)-(b.o.order||0);});
   var sdone=0;
   var d=document.createElement("details");d.className="owner";d.open=true;
-  var sum=document.createElement("summary");sum.innerHTML='<span>'+esc(sec.owner)+'</span><span class="count"></span>';var cnt=sum.querySelector(".count");d.appendChild(sum);
+  var sum=document.createElement("summary");
+  var nm=document.createElement("span");nm.className="secname";nm.textContent=sec.owner;
+  if(editorMode){nm.contentEditable=true;nm.title="Click to rename";
+   nm.onmousedown=function(e){e.stopPropagation();};
+   nm.onclick=function(e){e.stopPropagation();e.preventDefault();};
+   nm.onfocus=function(){nm._old=nm.textContent;};
+   nm.onblur=function(){var v=nm.textContent.trim();if(v&&v!==nm._old){db.ref("hub/sections/"+sec.id+"/owner").set(v);logit("renamed section",'"'+nm._old+'" → "'+v+'"');}else if(!v){nm.textContent=sec.owner;}};
+   nm.onkeydown=function(e){e.stopPropagation();if(e.key==="Enter"){e.preventDefault();nm.blur();}};
+  }
+  var cnt=document.createElement("span");cnt.className="count";
+  sum.appendChild(nm);sum.appendChild(cnt);d.appendChild(sum);
   var box=document.createElement("div");box.className="tlist";
   mine.forEach(function(item){
    var tid=item.id,t=item.o;total++;if(t.d){done++;sdone++;}
