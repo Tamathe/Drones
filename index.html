@@ -45,6 +45,10 @@ body.unconfigured .cfgbanner{display:block}
 body:not(.editing) .addrow{display:none}
 body:not(.editing) .del{display:none}
 body:not(.editing) .editoronly{display:none}
+td[contenteditable=true]{cursor:text}
+td[contenteditable=true]:focus{background:#f1f5f9;box-shadow:inset 0 0 0 1px #cbd5e1;border-radius:6px;outline:none}
+td[contenteditable=true]:empty::before{content:"…";color:#cbd5e1}
+table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
 @media(max-width:560px){.wrap{padding:14px 12px 48px}.hero{padding:20px}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -74,12 +78,12 @@ body:not(.editing) .editoronly{display:none}
 <details class="owner" id="logwrap"><summary><span>Activity log — who edited what</span><span class="count" id="logcount">0</span></summary><div class="tlist log" id="log"></div></details>
 <div class="note">Everyone edits as the shared <b>editor@drones.app</b> login, so type <b>your own name</b> in the <b>Editing as</b> box — the activity log credits each change by name. Edits save to a <b>shared live database</b> and appear for everyone within a second. <b>Export .json</b> / <b>Copy MD</b> make a backup anytime.</div>
 
-<h2 class="sec"><span class="bar"></span>Deadlines &amp; milestones</h2>
+<h2 class="sec"><span class="bar"></span>Deadlines &amp; milestones <span style="font-size:12px;font-weight:500;color:#94a3b8">— click a cell to edit, or add a row</span></h2>
 <div class="note" style="margin:0 0 10px">CCTS pilots are <b>rolling — no fixed submission deadline</b>. The one hard external date is <b>IRB within 90 days of award</b> or funds are forfeited.</div>
-<table><thead><tr><th>Milestone</th><th>Target</th><th>Owner</th><th>Status</th></tr></thead><tbody><tr><td>Send Hazard update email</td><td class=c>2026-06-22</td><td class=c>Tama</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Vendor quote — thermal carrier</td><td class=c>TBD</td><td class=c>Peng / Tama</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>UK Clinical Lab quote — assay panel</td><td class=c>TBD</td><td class=c>Tama / Bernard</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>NIH biosketches (Bernard, Ballard, Thé, Bailey)</td><td class=c>TBD</td><td class=c>All PIs</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Letters of support (KBC, UK Aerospace, CERH-Ph2)</td><td class=c>TBD</td><td class=c>Tama</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Summer thermal + flight test day(s)</td><td class=c>Summer 2026</td><td class=c>Peng / Bailey</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Target CCTS submission (rolling — self-set)</td><td class=c>TBD</td><td class=c>Team</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>[Post-award] IRB approval ≤ 90 days of award</td><td class=c>Award + 90 days</td><td class=c>PIs</td><td class=c><span class='pill ns'>Not started</span></td></tr></tbody></table>
+<div id="deadlines"></div>
 
-<h2 class="sec"><span class="bar"></span>Meetings</h2>
-<table><thead><tr><th>Date</th><th>Topic</th><th>Attendees</th></tr></thead><tbody><tr><td class=c>2026-06-22</td><td>Team meeting — feasibility, scope, budget, PIs</td><td class=mut>Bernard, Ballard, Thé, Peng, Dripchak, McGuire, Tiller, Baum</td></tr><tr><td class=c>2026-04-06</td><td>AI Incubator Meeting</td><td class=mut>—</td></tr><tr><td class=c>2026-02-17</td><td>Drones funding meeting</td><td class=mut>—</td></tr><tr><td class=c>2026-02-12</td><td>Drones meeting</td><td class=mut>—</td></tr></tbody></table>
+<h2 class="sec"><span class="bar"></span>Meetings <span style="font-size:12px;font-weight:500;color:#94a3b8">— click a cell to edit, or add a row</span></h2>
+<div id="meetings"></div>
 
 <h2 class="sec"><span class="bar"></span>Decisions <span style="font-size:12px;font-weight:500;color:#94a3b8">— click to edit, or add</span></h2>
 <div id="decs"></div>
@@ -140,10 +144,26 @@ var DECSEED=[
  "Budget = true cost (not the $5k cap); ~$20.5k RFA version, trimmable to ~$10–15k",
  "Multi-PI: Bernard, Ballard, Thé; add blood-bank co-Is; add DoD consultant"
 ];
+var MILESEED=[
+ {m:"Send Hazard update email",target:"2026-06-22",owner:"Tama",status:"Not started"},
+ {m:"Vendor quote — thermal carrier",target:"TBD",owner:"Peng / Tama",status:"Not started"},
+ {m:"UK Clinical Lab quote — assay panel",target:"TBD",owner:"Tama / Bernard",status:"Not started"},
+ {m:"NIH biosketches (Bernard, Ballard, Thé, Bailey)",target:"TBD",owner:"All PIs",status:"Not started"},
+ {m:"Letters of support (KBC, UK Aerospace, CERH-Ph2)",target:"TBD",owner:"Tama",status:"Not started"},
+ {m:"Summer thermal + flight test day(s)",target:"Summer 2026",owner:"Peng / Bailey",status:"Not started"},
+ {m:"Target CCTS submission (rolling — self-set)",target:"TBD",owner:"Team",status:"Not started"},
+ {m:"[Post-award] IRB approval ≤ 90 days of award",target:"Award + 90 days",owner:"PIs",status:"Not started"}
+];
+var MEETSEED=[
+ {date:"2026-06-22",topic:"Team meeting — feasibility, scope, budget, PIs",attendees:"Bernard, Ballard, Thé, Peng, Dripchak, McGuire, Tiller, Baum"},
+ {date:"2026-04-06",topic:"AI Incubator Meeting",attendees:"—"},
+ {date:"2026-02-17",topic:"Drones funding meeting",attendees:"—"},
+ {date:"2026-02-12",topic:"Drones meeting",attendees:"—"}
+];
 var SEED=[{"owner":"Tama Thé","tasks":[{"t":"Send update email to the Center of Excellence (Hazard)","p":1,"d":false},{"t":"Circulate revised CCTS draft + budget to the team","p":1,"d":false},{"t":"Finalize multiple-PI roster (keep Bernard)","p":1,"d":false},{"t":"Engage blood bank (Williams, Schmutler) on panel + cost","p":1,"d":false},{"t":"Coordinate non-human-subjects determination with Regan","p":1,"d":false}]},{"owner":"Hubie Ballard","tasks":[]},{"owner":"Andrew Peng","tasks":[{"t":"Confirm drone platform(s) + in-kind availability with Bailey","p":1,"d":false},{"t":"Schedule summer test day at Newtown Pike airfield","p":1,"d":false},{"t":"Bailey input on payload attachment + drop mechanism","p":2,"d":false},{"t":"Compile aerospace proof-of-concept experiments list","p":1,"d":false}]},{"owner":"Chaelyn McGuire","tasks":[{"t":"Design carrier-to-drone mounting (springs/3D-print)","p":1,"d":false},{"t":"Spec IV access component EMS may need","p":2,"d":false}]},{"owner":"Alex Dripchak","tasks":[{"t":"Scope cloud GPS-rendezvous logic (design only)","p":2,"d":false},{"t":"Identify GPS / data-transmission requirements","p":2,"d":false}]},{"owner":"Regan Baum","tasks":[{"t":"Non-human-research determination once protocol final","p":1,"d":false},{"t":"Confirm what CCTS funds (students/lab vs faculty)","p":1,"d":false},{"t":"Identify a blood-bank contact for integrity testing","p":1,"d":false}]},{"owner":"Blood bank — Williams, Schmutler","tasks":[{"t":"Recommend pre/post integrity panel","p":1,"d":false},{"t":"Advise on expired-unit sourcing","p":1,"d":false},{"t":"Confirm willingness to join as co-I / sub-I","p":1,"d":false}]},{"owner":"Team / open questions","tasks":[{"t":"Decide study N (≥2 days for reproducibility)","p":1,"d":false},{"t":"Authorship plan (first vs senior author)","p":1,"d":false},{"t":"Identify DoD consultant for CDMRP (e.g., Scott Prather)","p":2,"d":false},{"t":"Budget: confirm $20,500 vs trim to ~$10–15k","p":1,"d":false}]}];
 
 var db=null, auth=null, editorMode=false;
-var sections={}, tasks={}, decisions={}, docs={}, logArr=[];
+var sections={}, tasks={}, decisions={}, docs={}, milestones={}, meetings={}, logArr=[];
 var user=localStorage.getItem(UKEY)||"";
 var CONFIGURED = !!firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf("PASTE")<0;
 
@@ -154,7 +174,7 @@ function logit(action,detail){if(db)db.ref("hub/log").push({ts:now(),who:user||"
 
 /* ---------- live sync ---------- */
 function setSync(on){var el=document.getElementById("syncStat");if(!el)return;el.classList.toggle("on",on);document.getElementById("syncTxt").textContent=on?"live":"offline";}
-function setEditor(on){editorMode=on;document.body.classList.toggle("editing",on);var b=document.getElementById("lockBtn");if(b)b.textContent=on?"🔓 Editing — click to lock":"🔒 Unlock to edit";render();renderDecs();renderDocs();}
+function setEditor(on){editorMode=on;document.body.classList.toggle("editing",on);var b=document.getElementById("lockBtn");if(b)b.textContent=on?"🔓 Editing — click to lock":"🔒 Unlock to edit";render();renderDecs();renderDocs();renderDeadlines();renderMeetings();}
 
 function initFirebase(){
  firebase.initializeApp(firebaseConfig);
@@ -164,6 +184,8 @@ function initFirebase(){
  db.ref("hub/tasks").on("value",function(s){tasks=s.val()||{};render();});
  db.ref("hub/decisions").on("value",function(s){decisions=s.val()||{};renderDecs();});
  db.ref("hub/docs").on("value",function(s){docs=s.val()||{};renderDocs();});
+ db.ref("hub/milestones").on("value",function(s){milestones=s.val()||{};renderDeadlines();});
+ db.ref("hub/meetings").on("value",function(s){meetings=s.val()||{};renderMeetings();});
  db.ref("hub/log").limitToLast(300).on("value",function(s){logArr=[];s.forEach(function(ch){logArr.push(ch.val());});logArr.reverse();renderLog();});
  auth.onAuthStateChanged(function(u){setEditor(!!u);if(u)maybeSeed();});
 }
@@ -183,14 +205,16 @@ function seedData(){
   var did=db.ref("hub/decisions").push().key;
   updates["hub/decisions/"+did]={text:text,order:i};
  });
+ MILESEED.forEach(function(r,i){var id=db.ref("hub/milestones").push().key;updates["hub/milestones/"+id]={m:r.m,target:r.target,owner:r.owner,status:r.status,order:i};});
+ MEETSEED.forEach(function(r,i){var id=db.ref("hub/meetings").push().key;updates["hub/meetings/"+id]={date:r.date,topic:r.topic,attendees:r.attendees,order:i};});
  return db.ref().update(updates);
 }
 function maybeSeed(){
  db.ref("hub/meta/seeded").transaction(function(cur){if(cur)return;return true;},function(err,committed){if(!err&&committed)seedData().then(function(){logit("seeded","initial board");});});
 }
 function resetAll(){
- if(!confirm("Reset the shared board to the original baseline? This replaces tasks and decisions for everyone (the activity log is kept)."))return;
- db.ref("hub").update({sections:null,tasks:null,decisions:null}).then(seedData).then(function(){logit("reset","board to baseline");});
+ if(!confirm("Reset the shared board to the original baseline? This replaces tasks, decisions, deadlines and meetings for everyone (the activity log is kept)."))return;
+ db.ref("hub").update({sections:null,tasks:null,decisions:null,milestones:null,meetings:null}).then(seedData).then(function(){logit("reset","board to baseline");});
 }
 
 /* ---------- render ---------- */
@@ -266,13 +290,44 @@ function addDoc(){var t=document.getElementById("docTitle"),u=document.getElemen
  if(!/^https?:\/\/|^mailto:|\.(docx|xlsx|pdf|md|html|pptx|csv)$/i.test(uv)){if(!confirm("That doesn't look like a link. Add it anyway?"))return;}
  var did=db.ref("hub/docs").push().key;db.ref("hub/docs/"+did).set({t:tv,u:uv,by:(user||"(unnamed)"),order:Date.now()});logit("added document",tv);t.value="";u.value="";}
 
+/* ---------- editable tables (deadlines, meetings) ---------- */
+function editableTable(containerId,path,cols,data,label){
+ var el=document.getElementById(containerId);if(!el)return;el.innerHTML="";
+ var arr=Object.keys(data).map(function(id){return {id:id,o:data[id]};}).sort(function(a,b){return (a.o.order||0)-(b.o.order||0);});
+ var tbl=document.createElement("table"),thead=document.createElement("thead"),htr=document.createElement("tr");
+ cols.forEach(function(c){var th=document.createElement("th");th.textContent=c.label;htr.appendChild(th);});
+ htr.appendChild(document.createElement("th"));thead.appendChild(htr);tbl.appendChild(thead);
+ var tb=document.createElement("tbody");
+ if(!arr.length){var tr0=document.createElement("tr"),td0=document.createElement("td");td0.colSpan=cols.length+1;td0.style.cssText="color:#94a3b8";td0.textContent="Nothing yet — unlock to add a row.";tr0.appendChild(td0);tb.appendChild(tr0);}
+ arr.forEach(function(it){
+  var tr=document.createElement("tr");
+  cols.forEach(function(c){
+   var td=document.createElement("td");if(c.cls)td.className=c.cls;td.textContent=it.o[c.key]||"";td.contentEditable=editorMode;
+   td.onfocus=function(){td._old=td.textContent;};
+   td.onblur=function(){var v=td.textContent.trim();if(v!==((it.o[c.key]||"")+"")){db.ref(path+"/"+it.id+"/"+c.key).set(v);logit("edited "+label,c.label+" → "+(v||"(blank)"));}};
+   td.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();td.blur();}};
+   tr.appendChild(td);
+  });
+  var tdd=document.createElement("td");tdd.style.width="26px";
+  var del=document.createElement("button");del.className="del";del.innerHTML="&times;";del.title="Delete row";
+  del.onclick=function(){if(confirm("Delete this row?")){db.ref(path+"/"+it.id).remove();logit("deleted "+label,(it.o[cols[0].key]||"row")+"");}};
+  tdd.appendChild(del);tr.appendChild(tdd);tb.appendChild(tr);
+ });
+ tbl.appendChild(tb);el.appendChild(tbl);
+ var add=document.createElement("button");add.className="btn sm editoronly";add.textContent="+ Add row";add.style.margin="8px 0 0";
+ add.onclick=function(){var blank={order:Date.now()};cols.forEach(function(c,i){blank[c.key]=i===0?"New entry":"";});var id=db.ref(path).push().key;db.ref(path+"/"+id).set(blank);logit("added "+label,"new row");};
+ el.appendChild(add);
+}
+function renderDeadlines(){editableTable("deadlines","hub/milestones",[{key:"m",label:"Milestone"},{key:"target",label:"Target",cls:"c"},{key:"owner",label:"Owner",cls:"c"},{key:"status",label:"Status",cls:"c"}],milestones,"milestone");}
+function renderMeetings(){editableTable("meetings","hub/meetings",[{key:"date",label:"Date",cls:"c"},{key:"topic",label:"Topic"},{key:"attendees",label:"Attendees",cls:"mut"}],meetings,"meeting");}
+
 /* ---------- export / import ---------- */
 function toMd(){var o="# Drone Whole Blood Delivery — Action Items\n\n";
  var secArr=Object.keys(sections).map(function(id){return {id:id,owner:sections[id].owner,order:sections[id].order||0};}).sort(function(a,b){return a.order-b.order;});
  secArr.forEach(function(sec){o+="## "+sec.owner+"\n";
   Object.keys(tasks).filter(function(tid){return tasks[tid].sid===sec.id;}).map(function(tid){return tasks[tid];}).sort(function(a,b){return (a.order||0)-(b.order||0);}).forEach(function(t){o+="- ["+(t.d?"x":" ")+"] (P"+t.p+") "+t.t+"\n";});o+="\n";});
  o+="\n## Activity log\n";logArr.forEach(function(e){o+="- "+e.ts+" — "+e.who+" — "+e.a+": "+e.d+"\n";});return o;}
-function fullState(){return {sections:sections,tasks:tasks,decisions:decisions,docs:docs};}
+function fullState(){return {sections:sections,tasks:tasks,decisions:decisions,docs:docs,milestones:milestones,meetings:meetings};}
 
 /* ---------- wire static controls ---------- */
 var who=document.getElementById("who");who.value=user;who.oninput=function(){user=this.value;localStorage.setItem(UKEY,user);};
@@ -280,7 +335,7 @@ document.getElementById("copyMd").onclick=function(){navigator.clipboard.writeTe
 document.getElementById("expMd").onclick=function(){dl("Drone action items (updated).md",new Blob([toMd()],{type:MD}));};
 document.getElementById("expJson").onclick=function(){dl("Drone project (state).json",new Blob([JSON.stringify(fullState(),null,2)],{type:"application/json"}));};
 document.getElementById("impBtn").onclick=function(){document.getElementById("impFile").click();};
-document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f||!db)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);db.ref("hub").update({sections:o.sections||null,tasks:o.tasks||null,decisions:o.decisions||null,docs:o.docs||null}).then(function(){logit("imported","state from file");});}catch(x){alert("Could not read file.");}};r.readAsText(f);};
+document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f||!db)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);db.ref("hub").update({sections:o.sections||null,tasks:o.tasks||null,decisions:o.decisions||null,docs:o.docs||null,milestones:o.milestones||null,meetings:o.meetings||null}).then(function(){logit("imported","state from file");});}catch(x){alert("Could not read file.");}};r.readAsText(f);};
 document.getElementById("reset").onclick=function(){if(db)resetAll();};
 var _dca=document.getElementById("decAdd");if(_dca)_dca.onclick=addDec;
 var _dci=document.getElementById("decInput");if(_dci)_dci.onkeydown=function(e){if(e.key==="Enter")addDec();};
@@ -295,5 +350,5 @@ document.getElementById("lockBtn").onclick=function(){
 
 /* ---------- boot ---------- */
 if(CONFIGURED){try{initFirebase();}catch(e){document.body.classList.add("unconfigured");var c=document.getElementById("cfgmsg");if(c)c.textContent="Live sync error: "+((e&&e.message)||e);}}
-else{document.body.classList.add("unconfigured");render();renderDecs();renderDocs();renderLog();}
+else{document.body.classList.add("unconfigured");render();renderDecs();renderDocs();renderLog();renderDeadlines();renderMeetings();}
 </script></body></html>
