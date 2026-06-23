@@ -69,9 +69,10 @@ body:not(.editing) .editoronly{display:none}
  <span class="sync" id="syncStat" title="Live sync status"><span class="dot"></span><span id="syncTxt">connecting…</span></span>
  <button class="btn sm primary" id="lockBtn">🔒 Unlock to edit</button>
 </div>
+<div class="note" style="margin:0 0 12px;border-left-color:var(--good)">🔓 <b>Team edit login</b> (shared with the team — not a secret): <b>editor@drones.app</b> · password <b>drones</b>. Click <b>Unlock to edit</b> in the toolbar, then your changes sync live to everyone.</div>
 <div id="todo"></div>
 <details class="owner" id="logwrap"><summary><span>Activity log — who edited what</span><span class="count" id="logcount">0</span></summary><div class="tlist log" id="log"></div></details>
-<div class="note">Edits save to a <b>shared live database</b> — everyone with the page sees changes within a second. Click <b>Unlock to edit</b> and enter the team password to make changes. <b>Export .json</b> / <b>Copy MD</b> give you a snapshot or backup at any time.</div>
+<div class="note">Everyone edits as the shared <b>editor@drones.app</b> login, so type <b>your own name</b> in the <b>Editing as</b> box — the activity log credits each change by name. Edits save to a <b>shared live database</b> and appear for everyone within a second. <b>Export .json</b> / <b>Copy MD</b> make a backup anytime.</div>
 
 <h2 class="sec"><span class="bar"></span>Deadlines &amp; milestones</h2>
 <div class="note" style="margin:0 0 10px">CCTS pilots are <b>rolling — no fixed submission deadline</b>. The one hard external date is <b>IRB within 90 days of award</b> or funds are forfeited.</div>
@@ -288,7 +289,7 @@ var _du=document.getElementById("docUrl");if(_du)_du.onkeydown=function(e){if(e.
 document.getElementById("lockBtn").onclick=function(){
  if(!CONFIGURED||!auth){alert("Live sync is not configured yet.");return;}
  if(editorMode){auth.signOut();return;}
- var pw=prompt("Enter the team edit password:");if(!pw)return;
+ var pw=prompt("Team edit password (shared — it's 'drones'):","drones");if(!pw)return;
  auth.signInWithEmailAndPassword(EDITOR_EMAIL,pw).catch(function(e){alert("Could not unlock: "+((e&&e.message)||e));});
 };
 
