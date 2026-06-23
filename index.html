@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Whole Blood Drone Delivery — Project Hub</title>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--ink:#1b2733;--mut:#64748b;--line:#e2e8f0;--accent:#b3122b;--accent2:#0f5e9c;--good:#15803d;--shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 64px}
+.hero{background:linear-gradient(135deg,#b3122b,#7a0d1d);color:#fff;border-radius:16px;padding:26px 28px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 6px;font-size:25px}.hero p{margin:0;opacity:.92;max-width:720px}.hero .meta{margin-top:12px;font-size:13px;opacity:.85}
+h2.sec{font-size:18px;margin:32px 0 12px;display:flex;align-items:center;gap:10px}h2.sec .bar{width:4px;height:20px;background:var(--accent);border-radius:3px}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:#f8fafc;border-color:#cbd5e1}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.primary:hover{background:#990f24}
+.btn.sm{padding:5px 9px;font-size:12px}.btn.big{padding:11px 16px;font-size:14px}
+.pmcard{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.pmcard .l{flex:1;min-width:240px}.pmcard h3{margin:0 0 4px;font-size:16px}.pmcard p{margin:0;color:var(--mut);font-size:13px}.row{display:flex;gap:10px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card .badge{align-self:flex-start;font-size:11px;font-weight:700;color:#fff;background:var(--accent2);padding:3px 8px;border-radius:999px;margin-bottom:8px}.card .badge.md{background:#475569}.card .badge.xl{background:#15803d}
+.card h3{margin:0 0 6px;font-size:14px}.card p{margin:0 0 14px;color:var(--mut);font-size:13px;flex:1}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+th{background:#f1f5f9;text-align:left;padding:9px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:#475569}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}td.c{white-space:nowrap}td.mut{color:var(--mut);font-size:12.5px}
+.pill{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap;background:#eef2f7;color:#64748b}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:14px}
+.who{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.who input{border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:13px;outline:none;width:140px}.who input:focus{border-color:#cbd5e1}
+.progress{flex:1;min-width:160px}.progress .track{height:10px;background:#eef2f7;border-radius:999px;overflow:hidden}.progress .fill{height:100%;background:linear-gradient(90deg,#15803d,#22c55e);width:0;transition:width .35s}.progress .lbl{font-size:12px;color:var(--mut);margin-top:5px}
+.owner{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+.owner>summary{cursor:pointer;list-style:none;padding:12px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center}.owner>summary::-webkit-details-marker{display:none}.owner .count{font-size:12px;font-weight:600;color:var(--mut);background:#eef2f7;padding:2px 9px;border-radius:999px}
+.tlist{padding:2px 12px 8px}.t{display:flex;align-items:flex-start;gap:10px;padding:8px 4px;border-top:1px solid var(--line)}.t:first-child{border-top:none}
+.t input[type=checkbox]{margin-top:3px;width:17px;height:17px;accent-color:var(--good);cursor:pointer;flex:0 0 auto}
+.ph{font-size:10px;font-weight:800;color:#7a0d1d;background:#fbe9ed;border-radius:5px;padding:2px 6px;flex:0 0 auto;margin-top:2px}
+.ed{flex:1;outline:none;border-radius:6px;padding:2px 5px;min-width:0}.ed:focus{background:#f1f5f9;box-shadow:inset 0 0 0 1px #cbd5e1}
+.t.done .ed{color:#94a3b8;text-decoration:line-through}
+.del{opacity:0;border:none;background:none;color:#94a3b8;cursor:pointer;font-size:17px;line-height:1;padding:0 4px;flex:0 0 auto}.t:hover .del{opacity:1}.del:hover{color:var(--accent)}
+.addrow{display:flex;gap:8px;padding:8px 4px 2px;border-top:1px dashed var(--line)}.addrow input{flex:1;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;outline:none}
+.log{font-size:12.5px}.log .e{display:flex;gap:8px;padding:6px 4px;border-top:1px solid var(--line)}.log .e:first-child{border-top:none}.log .when{color:#94a3b8;white-space:nowrap;flex:0 0 auto}.log .who2{font-weight:700;flex:0 0 auto}
+ul.dec{margin:0;padding-left:20px}ul.dec li{margin:5px 0}
+.note{font-size:13px;color:var(--mut);background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent2);border-radius:10px;padding:12px 14px;margin-top:12px}
+footer{margin-top:36px;font-size:12px;color:var(--mut);text-align:center}
+@media(max-width:560px){.wrap{padding:14px 12px 48px}.hero{padding:20px}}
+</style></head><body><div class="wrap">
+<div class="hero"><h1>Whole Blood Drone Delivery — Project Hub</h1>
+<p>Type your name in the <b>Editing as</b> box, then edit the action items below. Every change is logged with who and when.</p>
+<div class="meta" id="lastup">Updated by — no edits yet</div></div>
+
+<h2 class="sec"><span class="bar"></span>Action items <span style="font-size:12px;font-weight:500;color:#94a3b8">— click text to edit, check to strike through</span></h2>
+<div class="toolbar">
+ <div class="who">Editing as <input id="who" placeholder="your name"></div>
+ <div class="progress"><div class="track"><div class="fill" id="fill"></div></div><div class="lbl" id="plbl">0 of 0 done</div></div>
+ <button class="btn sm" id="copyMd">Copy MD</button><button class="btn sm" id="expMd">Export .md</button>
+ <button class="btn sm" id="expJson">Export .json</button><button class="btn sm" id="impBtn">Import</button>
+ <button class="btn sm" id="reset">Reset</button><input type="file" id="impFile" accept=".json" style="display:none">
+</div>
+<div id="todo"></div>
+<details class="owner" id="logwrap"><summary><span>Activity log — who edited what</span><span class="count" id="logcount">0</span></summary><div class="tlist log" id="log"></div></details>
+<div class="note">Edits save automatically <b>in this browser</b>. To share an update, use <b>Export .md</b> / <b>Copy MD</b> (paste into the workbook) or <b>Export .json</b> to hand off the full state + log. For everyone to see edits live in one place, see the options at the bottom.</div>
+
+<h2 class="sec"><span class="bar"></span>Deadlines &amp; milestones</h2>
+<div class="note" style="margin:0 0 10px">CCTS pilots are <b>rolling — no fixed submission deadline</b>. The one hard external date is <b>IRB within 90 days of award</b> or funds are forfeited.</div>
+<table><thead><tr><th>Milestone</th><th>Target</th><th>Owner</th><th>Status</th></tr></thead><tbody><tr><td>Send Hazard update email</td><td class=c>2026-06-22</td><td class=c>Tama</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Vendor quote — thermal carrier</td><td class=c>TBD</td><td class=c>Peng / Tama</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>UK Clinical Lab quote — assay panel</td><td class=c>TBD</td><td class=c>Tama / Bernard</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>NIH biosketches (Bernard, Ballard, Thé, Bailey)</td><td class=c>TBD</td><td class=c>All PIs</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Letters of support (KBC, UK Aerospace, CERH-Ph2)</td><td class=c>TBD</td><td class=c>Tama</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Summer thermal + flight test day(s)</td><td class=c>Summer 2026</td><td class=c>Peng / Bailey</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>Target CCTS submission (rolling — self-set)</td><td class=c>TBD</td><td class=c>Team</td><td class=c><span class='pill ns'>Not started</span></td></tr><tr><td>[Post-award] IRB approval ≤ 90 days of award</td><td class=c>Award + 90 days</td><td class=c>PIs</td><td class=c><span class='pill ns'>Not started</span></td></tr></tbody></table>
+
+<h2 class="sec"><span class="bar"></span>Meetings</h2>
+<table><thead><tr><th>Date</th><th>Topic</th><th>Attendees</th></tr></thead><tbody><tr><td class=c>2026-06-22</td><td>Team meeting — feasibility, scope, budget, PIs</td><td class=mut>Bernard, Ballard, Thé, Peng, Dripchak, McGuire, Tiller, Baum</td></tr><tr><td class=c>2026-04-06</td><td>AI Incubator Meeting</td><td class=mut>—</td></tr><tr><td class=c>2026-02-17</td><td>Drones funding meeting</td><td class=mut>—</td></tr><tr><td class=c>2026-02-12</td><td>Drones meeting</td><td class=mut>—</td></tr></tbody></table>
+
+<h2 class="sec"><span class="bar"></span>Decisions (June 22)</h2><ul class="dec"><li>Pursue Phase 1 feasibility now; defer big funding until BVLOS is solved</li><li>Scope Phase 1 local: Newtown Pike, in-kind drones, VLOS Part 107, ~90°F, ≥2 days</li><li>Two aims: thermal + blood integrity; interception/CERH field sim = Phase 2; program = Phase 3</li><li>Use expired human whole-blood units; pre/post plasma-free Hgb + electrolytes + panel</li><li>Budget = true cost (not the $5k cap); ~$20.5k RFA version, trimmable to ~$10–15k</li><li>Multi-PI three amigos (Bernard, Ballard, Thé); add blood-bank co-Is; add DoD consultant</li></ul>
+
+<h2 class="sec"><span class="bar"></span>Documents (OneDrive)</h2>
+<div class="note">These open the live OneDrive copies — <b>UK sign-in required</b>, shared with anyone at the University of Kentucky, and always the newest version. The documents are <b>not</b> bundled into this page. <span style="color:#94a3b8">Send me the share links and I'll turn these into buttons.</span></div>
+<div class="grid">
+<div class="card"><span class="badge xl">XLSX</span><h3>Project Manager workbook</h3><p>Tasks, deadlines, meetings, documents, decisions, activity log.</p><span class="btn" style="opacity:.55;cursor:default" data-doc="workbook">OneDrive link to add</span></div>
+<div class="card"><span class="badge">DOCX</span><h3>CCTS RFA Application</h3><p>Full submission in official CCTS RFA format ($20,500 budget).</p><span class="btn" style="opacity:.55;cursor:default" data-doc="rfa">OneDrive link to add</span></div>
+<div class="card"><span class="badge">DOCX</span><h3>CCTS Draft v2</h3><p>Plain-language two-aim draft (thermal + integrity).</p><span class="btn" style="opacity:.55;cursor:default" data-doc="draft">OneDrive link to add</span></div>
+<div class="card"><span class="badge md">MD</span><h3>Hazard update email</h3><p>Ready-to-send update to the Center of Excellence in Rural Health.</p><span class="btn" style="opacity:.55;cursor:default" data-doc="email">OneDrive link to add</span></div>
+</div>
+
+<h2 class="sec"><span class="bar"></span>Team documents <span style="font-size:12px;font-weight:500;color:#94a3b8">— add a link to your own</span></h2>
+<div class="note" style="margin-bottom:12px">Anyone can add a document: paste a <b>OneDrive/SharePoint share link</b> (UK sign-in; share with everyone at UK so it stays the latest) plus a name, and click <b>Add</b>. To actually <b>upload a file</b> so the whole team has it, drop it into the shared OneDrive project folder, then paste its share link here. Additions save in your browser and are recorded in the activity log — use <b>Export .json</b> to share the full set.</div>
+<div id="docs2"></div>
+<div class="addrow" style="border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);box-shadow:var(--shadow);margin-top:8px">
+ <input id="docTitle" placeholder="Document name" style="flex:1">
+ <input id="docUrl" placeholder="Paste link (https://… or OneDrive share link)" style="flex:2">
+ <button class="btn primary sm" id="docAdd">Add</button>
+</div>
+
+<div class="note"><b>About this hosted page.</b> It is a static site (GitHub Pages), so task edits and the activity log save in <b>your own browser</b> — they are not shared between people. The always-current shared items are the <b>OneDrive documents</b> linked above (UK sign-in). For shared task tracking too, edit the Project Manager workbook in OneDrive, or ask Claude to wire this to a live backend. <b>Note:</b> anything typed into this page is publicly visible to anyone with the URL — keep sensitive details in the UK-only OneDrive files.</div>
+<footer>Self-contained editor + dashboard for the Drones project • generated June 22, 2026</footer>
+</div>
+<script>
+var MD="text/markdown";
+document.querySelectorAll("button[data-b64]").forEach(function(b){b.onclick=function(){var s=atob(b.dataset.b64),n=s.length,a=new Uint8Array(n);for(var i=0;i<n;i++)a[i]=s.charCodeAt(i);var u=URL.createObjectURL(new Blob([a],{type:b.dataset.mime}));var x=document.createElement("a");x.href=u;x.download=b.dataset.name;document.body.appendChild(x);x.click();x.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);};});
+var TKEY="wbdd_tasks_v2",LKEY="wbdd_log_v2",UKEY="wbdd_user";
+var SEED=[{"owner": "Tama Th\u00e9", "tasks": [{"t": "Send update email to the Center of Excellence (Hazard)", "p": 1, "d": false}, {"t": "Circulate revised CCTS draft + budget to the team", "p": 1, "d": false}, {"t": "Finalize multiple-PI roster (three amigos; keep Bernard)", "p": 1, "d": false}, {"t": "Engage blood bank (Williams, Schmutler) on panel + cost", "p": 1, "d": false}, {"t": "Coordinate non-human-subjects determination with Regan", "p": 1, "d": false}]}, {"owner": "Andrew Peng (aerospace \u2014 Bailey liaison)", "tasks": [{"t": "Confirm drone platform(s) + in-kind availability with Bailey", "p": 1, "d": false}, {"t": "Schedule summer test day at Newtown Pike airfield", "p": 1, "d": false}, {"t": "Bailey input on payload attachment + drop mechanism", "p": 2, "d": false}, {"t": "Compile aerospace proof-of-concept experiments list", "p": 1, "d": false}]}, {"owner": "Chaelyn McGuire (payload integration)", "tasks": [{"t": "Design carrier-to-drone mounting (springs/3D-print)", "p": 1, "d": false}, {"t": "Spec IV access component EMS may need", "p": 2, "d": false}]}, {"owner": "Alex Dripchak (software \u2014 Phase 2)", "tasks": [{"t": "Scope cloud GPS-rendezvous logic (design only)", "p": 2, "d": false}, {"t": "Identify GPS / data-transmission requirements", "p": 2, "d": false}]}, {"owner": "Regan Baum (research nav / CCTS)", "tasks": [{"t": "Non-human-research determination once protocol final", "p": 1, "d": false}, {"t": "Confirm what CCTS funds (students/lab vs faculty)", "p": 1, "d": false}, {"t": "Identify a blood-bank contact for integrity testing", "p": 1, "d": false}]}, {"owner": "Blood bank \u2014 Williams (KBC), Schmutler (UK)", "tasks": [{"t": "Recommend pre/post integrity panel", "p": 1, "d": false}, {"t": "Advise on expired-unit sourcing", "p": 1, "d": false}, {"t": "Confirm willingness to join as co-I / sub-I", "p": 1, "d": false}]}, {"owner": "Team / open questions", "tasks": [{"t": "Decide study N (\u22652 days for reproducibility)", "p": 1, "d": false}, {"t": "Authorship plan (first vs senior author)", "p": 1, "d": false}, {"t": "Identify DoD consultant for CDMRP (e.g., Scott Prather)", "p": 2, "d": false}, {"t": "Budget: confirm $20,500 vs trim to ~$10\u201315k", "p": 1, "d": false}]}];
+var state,log,user;
+function load(){try{state=JSON.parse(localStorage.getItem(TKEY))||JSON.parse(JSON.stringify(SEED))}catch(e){state=JSON.parse(JSON.stringify(SEED))}
+ try{log=JSON.parse(localStorage.getItem(LKEY))||[]}catch(e){log=[]}; user=localStorage.getItem(UKEY)||"";}
+function save(){localStorage.setItem(TKEY,JSON.stringify(state));localStorage.setItem(LKEY,JSON.stringify(log));}
+function esc(s){return (s+"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function now(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
+function logit(action,detail){log.unshift({ts:now(),who:user||"(unnamed)",a:action,d:detail});save();renderLog();}
+function renderLog(){var el=document.getElementById("log");document.getElementById("logcount").textContent=log.length;var _lu=document.getElementById("lastup");if(_lu)_lu.textContent=log.length?("Updated by "+log[0].who+" · "+log[0].ts):"Updated by — no edits yet";
+ el.innerHTML=log.length?log.map(function(e){return '<div class="e"><span class="when">'+esc(e.ts)+'</span><span class="who2">'+esc(e.who)+'</span><span>'+esc(e.a)+': '+esc(e.d)+'</span></div>';}).join(""):'<div class="e" style="color:#94a3b8">No changes yet.</div>';}
+function render(){var root=document.getElementById("todo");root.innerHTML="";var done=0,total=0;
+ state.forEach(function(sec,si){var sdone=0;
+  var d=document.createElement("details");d.className="owner";d.open=true;
+  var sum=document.createElement("summary");sum.innerHTML='<span>'+esc(sec.owner)+'</span><span class="count" id="c'+si+'"></span>';d.appendChild(sum);
+  var box=document.createElement("div");box.className="tlist";
+  sec.tasks.forEach(function(t,ti){total++;if(t.d){done++;sdone++;}
+   var row=document.createElement("div");row.className="t"+(t.d?" done":"");
+   var cb=document.createElement("input");cb.type="checkbox";cb.checked=t.d;
+   cb.onchange=function(){t.d=cb.checked;save();logit(cb.checked?"checked":"unchecked",t.t);render();};
+   var ph=document.createElement("span");ph.className="ph";ph.textContent="P"+t.p;
+   var ed=document.createElement("div");ed.className="ed";ed.contentEditable=true;ed.textContent=t.t;ed._old=t.t;
+   ed.onfocus=function(){ed._old=ed.textContent;};
+   ed.onblur=function(){var v=ed.textContent.trim();if(v&&v!==ed._old){var old=ed._old;t.t=v;save();logit("edited",'"'+old+'" → "'+v+'"');}else if(!v){ed.textContent=t.t;}};
+   ed.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();ed.blur();}};
+   var del=document.createElement("button");del.className="del";del.innerHTML="&times;";del.title="Delete";
+   del.onclick=function(){if(confirm("Delete this task?")){logit("deleted",t.t);sec.tasks.splice(ti,1);save();render();}};
+   row.appendChild(cb);row.appendChild(ph);row.appendChild(ed);row.appendChild(del);box.appendChild(row);
+  });
+  var add=document.createElement("div");add.className="addrow";var inp=document.createElement("input");inp.placeholder="Add a task…";
+  function addT(){var v=inp.value.trim();if(v){sec.tasks.push({t:v,p:1,d:false});inp.value="";save();logit("added",v);render();}}
+  inp.onkeydown=function(e){if(e.key==="Enter")addT();};var ab=document.createElement("button");ab.className="btn sm";ab.textContent="Add";ab.onclick=addT;
+  add.appendChild(inp);add.appendChild(ab);box.appendChild(add);d.appendChild(box);root.appendChild(d);
+  var cc=document.getElementById("c"+si);if(cc)cc.textContent=sdone+"/"+sec.tasks.length;
+ });
+ var pct=total?Math.round(done/total*100):0;document.getElementById("fill").style.width=pct+"%";document.getElementById("plbl").textContent=done+" of "+total+" done ("+pct+"%)";}
+function toMd(){var o="# Drone Whole Blood Delivery — Action Items\n\n";state.forEach(function(s){o+="## "+s.owner+"\n";s.tasks.forEach(function(t){o+="- ["+(t.d?"x":" ")+"] (P"+t.p+") "+t.t+"\n";});o+="\n";});
+ o+="\n## Activity log\n";log.forEach(function(e){o+="- "+e.ts+" — "+e.who+" — "+e.a+": "+e.d+"\n";});return o;}
+function dl(name,blob){var u=URL.createObjectURL(blob);var a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);}
+document.getElementById("who").value=user;
+document.getElementById("who").oninput=function(){user=this.value;localStorage.setItem(UKEY,user);};
+document.getElementById("copyMd").onclick=function(){navigator.clipboard.writeText(toMd()).then(function(){var b=document.getElementById("copyMd");b.textContent="Copied!";setTimeout(function(){b.textContent="Copy MD";},1200);});};
+document.getElementById("expMd").onclick=function(){dl("Drone action items (updated).md",new Blob([toMd()],{type:MD}));};
+document.getElementById("expJson").onclick=function(){dl("Drone action items (state).json",new Blob([JSON.stringify({tasks:state,log:log},null,2)],{type:"application/json"}));};
+document.getElementById("impBtn").onclick=function(){document.getElementById("impFile").click();};
+document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.tasks){state=o.tasks;log=o.log||log;save();render();renderLog();logit("imported","state from file");}else alert("Not a valid export.");}catch(x){alert("Could not read file.");}};r.readAsText(f);};
+document.getElementById("reset").onclick=function(){if(confirm("Reset tasks to the original list? Your local edits and log stay unless you also clear them.")){state=JSON.parse(JSON.stringify(SEED));save();render();logit("reset","tasks to original");}};
+load();render();renderLog();
+
+/* ---- Team documents (add your own links) ---- */
+var DKEY="wbdd_docs_v1";
+var DOCSEED=[];
+var docs;
+function loadDocs(){try{docs=JSON.parse(localStorage.getItem(DKEY))||JSON.parse(JSON.stringify(DOCSEED));}catch(e){docs=JSON.parse(JSON.stringify(DOCSEED));}}
+function saveDocs(){localStorage.setItem(DKEY,JSON.stringify(docs));}
+function renderDocs(){var el=document.getElementById("docs2");if(!el)return;el.innerHTML="";
+ var wrap=document.createElement("div");wrap.className="owner";wrap.style.padding="2px 12px 8px";
+ if(!docs.length){var em=document.createElement("div");em.style.cssText="padding:10px 4px;color:#94a3b8";em.textContent="No documents yet — add one below.";wrap.appendChild(em);}
+ docs.forEach(function(dc,i){var row=document.createElement("div");row.className="t";
+  var a=document.createElement("a");a.href=dc.u;a.target="_blank";a.rel="noopener";a.textContent=dc.t;a.className="ed";a.style.color="var(--accent2)";a.style.fontWeight="600";a.style.textDecoration="none";a.style.flex="1";
+  var by=document.createElement("span");by.style.cssText="font-size:11px;color:#94a3b8;flex:0 0 auto;align-self:center";by.textContent=dc.by?("added by "+dc.by):"";
+  var del=document.createElement("button");del.className="del";del.innerHTML="&times;";del.title="Remove";
+  del.onclick=function(){if(confirm("Remove this document link?")){logit("removed document",dc.t);docs.splice(i,1);saveDocs();renderDocs();}};
+  row.appendChild(a);row.appendChild(by);row.appendChild(del);wrap.appendChild(row);});
+ el.appendChild(wrap);}
+function addDoc(){var t=document.getElementById("docTitle"),u=document.getElementById("docUrl");
+ var tv=(t.value||"").trim(),uv=(u.value||"").trim();
+ if(!tv||!uv){alert("Add a document name and a link.");return;}
+ if(!/^https?:\/\/|^mailto:|\.(docx|xlsx|pdf|md|html|pptx|csv)$/i.test(uv)){if(!confirm("That doesn't look like a link. Add it anyway?"))return;}
+ docs.push({t:tv,u:uv,by:(user||"(unnamed)")});saveDocs();logit("added document",tv);t.value="";u.value="";renderDocs();}
+var _da=document.getElementById("docAdd");if(_da)_da.onclick=addDoc;
+var _du=document.getElementById("docUrl");if(_du)_du.onkeydown=function(e){if(e.key==="Enter")addDoc();};
+/* include docs in full-state export/import */
+document.getElementById("expJson").onclick=function(){dl("Drone project (state).json",new Blob([JSON.stringify({tasks:state,log:log,docs:docs},null,2)],{type:"application/json"}));};
+document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.tasks){state=o.tasks;}if(o.log){log=o.log;}if(o.docs){docs=o.docs;saveDocs();}save();render();renderLog();renderDocs();logit("imported","state from file");}catch(x){alert("Could not read file.");}};r.readAsText(f);};
+loadDocs();renderDocs();
+
+</script></body></html>
