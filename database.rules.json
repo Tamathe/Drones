@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "hub": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'PASTE_EDITOR_UID'"
+    }
+  }
+}
