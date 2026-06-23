@@ -40,7 +40,7 @@ footer{margin-top:36px;font-size:12px;color:var(--mut);text-align:center}
 @media(max-width:560px){.wrap{padding:14px 12px 48px}.hero{padding:20px}}
 </style></head><body><div class="wrap">
 <div class="hero"><h1>Whole Blood Drone Delivery — Project Hub</h1>
-<p>Type your name in the <b>Editing as</b> box, then edit the action items below. Every change is logged with who and when.</p>
+<p>Type your name in the <b>Editing as</b> box, then edit the action items below. Every change is logged.</p>
 <div class="meta" id="lastup">Updated by — no edits yet</div></div>
 
 <h2 class="sec"><span class="bar"></span>Action items <span style="font-size:12px;font-weight:500;color:#94a3b8">— click text to edit, check to strike through</span></h2>
@@ -62,7 +62,12 @@ footer{margin-top:36px;font-size:12px;color:var(--mut);text-align:center}
 <h2 class="sec"><span class="bar"></span>Meetings</h2>
 <table><thead><tr><th>Date</th><th>Topic</th><th>Attendees</th></tr></thead><tbody><tr><td class=c>2026-06-22</td><td>Team meeting — feasibility, scope, budget, PIs</td><td class=mut>Bernard, Ballard, Thé, Peng, Dripchak, McGuire, Tiller, Baum</td></tr><tr><td class=c>2026-04-06</td><td>AI Incubator Meeting</td><td class=mut>—</td></tr><tr><td class=c>2026-02-17</td><td>Drones funding meeting</td><td class=mut>—</td></tr><tr><td class=c>2026-02-12</td><td>Drones meeting</td><td class=mut>—</td></tr></tbody></table>
 
-<h2 class="sec"><span class="bar"></span>Decisions (June 22)</h2><ul class="dec"><li>Pursue Phase 1 feasibility now; defer big funding until BVLOS is solved</li><li>Scope Phase 1 local: Newtown Pike, in-kind drones, VLOS Part 107, ~90°F, ≥2 days</li><li>Two aims: thermal + blood integrity; interception/CERH field sim = Phase 2; program = Phase 3</li><li>Use expired human whole-blood units; pre/post plasma-free Hgb + electrolytes + panel</li><li>Budget = true cost (not the $5k cap); ~$20.5k RFA version, trimmable to ~$10–15k</li><li>Multi-PI three amigos (Bernard, Ballard, Thé); add blood-bank co-Is; add DoD consultant</li></ul>
+<h2 class="sec"><span class="bar"></span>Decisions <span style="font-size:12px;font-weight:500;color:#94a3b8">— click to edit, or add</span></h2>
+<div id="decs"></div>
+<div class="addrow" style="border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);box-shadow:var(--shadow);margin-top:8px">
+ <input id="decInput" placeholder="Add a decision…" style="flex:1">
+ <button class="btn primary sm" id="decAdd">Add</button>
+</div>
 
 <h2 class="sec"><span class="bar"></span>Documents (OneDrive)</h2>
 <div class="note">These open the live OneDrive copies — <b>UK sign-in required</b>, shared with anyone at the University of Kentucky, and always the newest version. The documents are <b>not</b> bundled into this page. <span style="color:#94a3b8">Send me the share links and I'll turn these into buttons.</span></div>
@@ -89,7 +94,7 @@ footer{margin-top:36px;font-size:12px;color:var(--mut);text-align:center}
 var MD="text/markdown";
 document.querySelectorAll("button[data-b64]").forEach(function(b){b.onclick=function(){var s=atob(b.dataset.b64),n=s.length,a=new Uint8Array(n);for(var i=0;i<n;i++)a[i]=s.charCodeAt(i);var u=URL.createObjectURL(new Blob([a],{type:b.dataset.mime}));var x=document.createElement("a");x.href=u;x.download=b.dataset.name;document.body.appendChild(x);x.click();x.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);};});
 var TKEY="wbdd_tasks_v2",LKEY="wbdd_log_v2",UKEY="wbdd_user";
-var SEED=[{"owner": "Tama Th\u00e9", "tasks": [{"t": "Send update email to the Center of Excellence (Hazard)", "p": 1, "d": false}, {"t": "Circulate revised CCTS draft + budget to the team", "p": 1, "d": false}, {"t": "Finalize multiple-PI roster (three amigos; keep Bernard)", "p": 1, "d": false}, {"t": "Engage blood bank (Williams, Schmutler) on panel + cost", "p": 1, "d": false}, {"t": "Coordinate non-human-subjects determination with Regan", "p": 1, "d": false}]}, {"owner": "Andrew Peng (aerospace \u2014 Bailey liaison)", "tasks": [{"t": "Confirm drone platform(s) + in-kind availability with Bailey", "p": 1, "d": false}, {"t": "Schedule summer test day at Newtown Pike airfield", "p": 1, "d": false}, {"t": "Bailey input on payload attachment + drop mechanism", "p": 2, "d": false}, {"t": "Compile aerospace proof-of-concept experiments list", "p": 1, "d": false}]}, {"owner": "Chaelyn McGuire (payload integration)", "tasks": [{"t": "Design carrier-to-drone mounting (springs/3D-print)", "p": 1, "d": false}, {"t": "Spec IV access component EMS may need", "p": 2, "d": false}]}, {"owner": "Alex Dripchak (software \u2014 Phase 2)", "tasks": [{"t": "Scope cloud GPS-rendezvous logic (design only)", "p": 2, "d": false}, {"t": "Identify GPS / data-transmission requirements", "p": 2, "d": false}]}, {"owner": "Regan Baum (research nav / CCTS)", "tasks": [{"t": "Non-human-research determination once protocol final", "p": 1, "d": false}, {"t": "Confirm what CCTS funds (students/lab vs faculty)", "p": 1, "d": false}, {"t": "Identify a blood-bank contact for integrity testing", "p": 1, "d": false}]}, {"owner": "Blood bank \u2014 Williams (KBC), Schmutler (UK)", "tasks": [{"t": "Recommend pre/post integrity panel", "p": 1, "d": false}, {"t": "Advise on expired-unit sourcing", "p": 1, "d": false}, {"t": "Confirm willingness to join as co-I / sub-I", "p": 1, "d": false}]}, {"owner": "Team / open questions", "tasks": [{"t": "Decide study N (\u22652 days for reproducibility)", "p": 1, "d": false}, {"t": "Authorship plan (first vs senior author)", "p": 1, "d": false}, {"t": "Identify DoD consultant for CDMRP (e.g., Scott Prather)", "p": 2, "d": false}, {"t": "Budget: confirm $20,500 vs trim to ~$10\u201315k", "p": 1, "d": false}]}];
+var SEED=[{"owner": "Tama Thé", "tasks": [{"t": "Send update email to the Center of Excellence (Hazard)", "p": 1, "d": false}, {"t": "Circulate revised CCTS draft + budget to the team", "p": 1, "d": false}, {"t": "Finalize multiple-PI roster (keep Bernard)", "p": 1, "d": false}, {"t": "Engage blood bank (Williams, Schmutler) on panel + cost", "p": 1, "d": false}, {"t": "Coordinate non-human-subjects determination with Regan", "p": 1, "d": false}]}, {"owner": "Hubie Ballard", "tasks": []}, {"owner": "Andrew Peng", "tasks": [{"t": "Confirm drone platform(s) + in-kind availability with Bailey", "p": 1, "d": false}, {"t": "Schedule summer test day at Newtown Pike airfield", "p": 1, "d": false}, {"t": "Bailey input on payload attachment + drop mechanism", "p": 2, "d": false}, {"t": "Compile aerospace proof-of-concept experiments list", "p": 1, "d": false}]}, {"owner": "Chaelyn McGuire", "tasks": [{"t": "Design carrier-to-drone mounting (springs/3D-print)", "p": 1, "d": false}, {"t": "Spec IV access component EMS may need", "p": 2, "d": false}]}, {"owner": "Alex Dripchak", "tasks": [{"t": "Scope cloud GPS-rendezvous logic (design only)", "p": 2, "d": false}, {"t": "Identify GPS / data-transmission requirements", "p": 2, "d": false}]}, {"owner": "Regan Baum", "tasks": [{"t": "Non-human-research determination once protocol final", "p": 1, "d": false}, {"t": "Confirm what CCTS funds (students/lab vs faculty)", "p": 1, "d": false}, {"t": "Identify a blood-bank contact for integrity testing", "p": 1, "d": false}]}, {"owner": "Blood bank — Williams, Schmutler", "tasks": [{"t": "Recommend pre/post integrity panel", "p": 1, "d": false}, {"t": "Advise on expired-unit sourcing", "p": 1, "d": false}, {"t": "Confirm willingness to join as co-I / sub-I", "p": 1, "d": false}]}, {"owner": "Team / open questions", "tasks": [{"t": "Decide study N (≥2 days for reproducibility)", "p": 1, "d": false}, {"t": "Authorship plan (first vs senior author)", "p": 1, "d": false}, {"t": "Identify DoD consultant for CDMRP (e.g., Scott Prather)", "p": 2, "d": false}, {"t": "Budget: confirm $20,500 vs trim to ~$10–15k", "p": 1, "d": false}]}];
 var state,log,user;
 function load(){try{state=JSON.parse(localStorage.getItem(TKEY))||JSON.parse(JSON.stringify(SEED))}catch(e){state=JSON.parse(JSON.stringify(SEED))}
  try{log=JSON.parse(localStorage.getItem(LKEY))||[]}catch(e){log=[]}; user=localStorage.getItem(UKEY)||"";}
@@ -164,5 +169,38 @@ var _du=document.getElementById("docUrl");if(_du)_du.onkeydown=function(e){if(e.
 document.getElementById("expJson").onclick=function(){dl("Drone project (state).json",new Blob([JSON.stringify({tasks:state,log:log,docs:docs},null,2)],{type:"application/json"}));};
 document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.tasks){state=o.tasks;}if(o.log){log=o.log;}if(o.docs){docs=o.docs;saveDocs();}save();render();renderLog();renderDocs();logit("imported","state from file");}catch(x){alert("Could not read file.");}};r.readAsText(f);};
 loadDocs();renderDocs();
+
+
+/* ---- Decisions (editable) ---- */
+var DECKEY="wbdd_decs_v1";
+var DECSEED=[
+ "Pursue Phase 1 feasibility now; defer big funding until BVLOS is solved",
+ "Scope Phase 1 local: Newtown Pike, in-kind drones, VLOS Part 107, ~90°F, ≥2 days",
+ "Two aims: thermal + blood integrity; interception/CERH field sim = Phase 2; program = Phase 3",
+ "Use expired human whole-blood units; pre/post plasma-free Hgb + electrolytes + panel",
+ "Budget = true cost (not the $5k cap); ~$20.5k RFA version, trimmable to ~$10–15k",
+ "Multi-PI: Bernard, Ballard, Thé; add blood-bank co-Is; add DoD consultant"
+];
+var decs;
+function loadDecs(){try{decs=JSON.parse(localStorage.getItem(DECKEY))||JSON.parse(JSON.stringify(DECSEED));}catch(e){decs=JSON.parse(JSON.stringify(DECSEED));}}
+function saveDecs(){localStorage.setItem(DECKEY,JSON.stringify(decs));}
+function renderDecs(){var el=document.getElementById("decs");if(!el)return;el.innerHTML="";
+ var wrap=document.createElement("div");wrap.className="owner";wrap.style.padding="2px 12px 8px";
+ if(!decs.length){var em=document.createElement("div");em.style.cssText="padding:10px 4px;color:#94a3b8";em.textContent="No decisions yet — add one below.";wrap.appendChild(em);}
+ decs.forEach(function(tx,i){var row=document.createElement("div");row.className="t";
+  var ed=document.createElement("div");ed.className="ed";ed.contentEditable=true;ed.textContent=tx;ed._old=tx;ed.style.flex="1";
+  ed.onfocus=function(){ed._old=ed.textContent;};
+  ed.onblur=function(){var v=ed.textContent.trim();if(v&&v!==ed._old){var old=ed._old;decs[i]=v;saveDecs();logit("edited decision",'"'+old+'" -> "'+v+'"');}else if(!v){ed.textContent=decs[i];}};
+  ed.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();ed.blur();}};
+  var del=document.createElement("button");del.className="del";del.innerHTML="&times;";del.title="Delete";
+  del.onclick=function(){if(confirm("Delete this decision?")){logit("deleted decision",decs[i]);decs.splice(i,1);saveDecs();renderDecs();}};
+  row.appendChild(ed);row.appendChild(del);wrap.appendChild(row);});
+ el.appendChild(wrap);}
+function addDec(){var inp=document.getElementById("decInput");var v=(inp.value||"").trim();if(!v)return;decs.push(v);saveDecs();logit("added decision",v);inp.value="";renderDecs();}
+var _dca=document.getElementById("decAdd");if(_dca)_dca.onclick=addDec;
+var _dci=document.getElementById("decInput");if(_dci)_dci.onkeydown=function(e){if(e.key==="Enter")addDec();};
+document.getElementById("expJson").onclick=function(){dl("Drone project (state).json",new Blob([JSON.stringify({tasks:state,log:log,docs:docs,decs:decs},null,2)],{type:"application/json"}));};
+document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.tasks)state=o.tasks;if(o.log)log=o.log;if(o.docs){docs=o.docs;saveDocs();}if(o.decs){decs=o.decs;saveDecs();}save();render();renderLog();renderDocs();renderDecs();logit("imported","state from file");}catch(x){alert("Could not read file.");}};r.readAsText(f);};
+loadDecs();renderDecs();
 
 </script></body></html>
