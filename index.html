@@ -58,30 +58,38 @@ table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head><body><div class="wrap">
 <div class="hero"><h1>Whole Blood Drone Delivery — Project Hub</h1>
-<p>Type your name in the <b>Editing as</b> box, click <b>Unlock to edit</b> and enter the team password, then edit below. Changes sync <b>live to everyone</b> and are logged.</p>
+<p>Live shared hub — view-only for anyone with the link. To edit, click <b>Unlock to edit</b> (team password <b>drones</b>) and add your name in <b>Editing as</b>. Changes sync <b>live to everyone</b>.</p>
 <div class="meta" id="lastup">Updated by — no edits yet</div></div>
 
 <div class="cfgbanner" id="cfgmsg">Live sync is not configured yet — this page is showing an empty board. Paste your Firebase config into <code>index.html</code> to go live.</div>
 
+<div class="toolbar" style="margin-bottom:14px">
+ <div class="who">Editing as <input id="who" placeholder="your name"></div>
+ <span class="sync" id="syncStat" title="Live sync status"><span class="dot"></span><span id="syncTxt">connecting…</span></span>
+ <button class="btn sm primary" id="lockBtn" style="margin-left:auto">🔒 Unlock to edit</button>
+</div>
+
+<h2 class="sec"><span class="bar"></span>Team documents <span style="font-size:12px;font-weight:500;color:#94a3b8">— add a link to your own</span></h2>
+<div id="docs2"></div>
+<div class="addrow" style="border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);box-shadow:var(--shadow);margin-top:8px">
+ <input id="docTitle" placeholder="Document name" style="flex:1">
+ <input id="docUrl" placeholder="Paste link (https://… or OneDrive share link)" style="flex:2">
+ <button class="btn primary sm" id="docAdd">Add</button>
+</div>
+
 <h2 class="sec"><span class="bar"></span>Action items <span style="font-size:12px;font-weight:500;color:#94a3b8">— click text to edit, check to strike through</span></h2>
 <div class="toolbar">
- <div class="who">Editing as <input id="who" placeholder="your name"></div>
  <div class="progress"><div class="track"><div class="fill" id="fill"></div></div><div class="lbl" id="plbl">0 of 0 done</div></div>
  <button class="btn sm" id="copyMd">Copy MD</button><button class="btn sm" id="expMd">Export .md</button>
  <button class="btn sm" id="expJson">Export .json</button>
  <button class="btn sm editoronly" id="impBtn">Import</button>
  <button class="btn sm editoronly" id="reset">Reset</button>
  <input type="file" id="impFile" accept=".json" style="display:none">
- <span class="sync" id="syncStat" title="Live sync status"><span class="dot"></span><span id="syncTxt">connecting…</span></span>
- <button class="btn sm primary" id="lockBtn">🔒 Unlock to edit</button>
 </div>
-<div class="note" style="margin:0 0 12px;border-left-color:var(--good)">🔓 <b>Team edit login</b> (shared with the team — not a secret): <b>editor@drones.app</b> · password <b>drones</b>. Click <b>Unlock to edit</b> in the toolbar, then your changes sync live to everyone.</div>
 <div id="todo"></div>
 <details class="owner" id="logwrap"><summary><span>Activity log — who edited what</span><span class="count" id="logcount">0</span></summary><div class="tlist log" id="log"></div></details>
-<div class="note">Everyone edits as the shared <b>editor@drones.app</b> login, so type <b>your own name</b> in the <b>Editing as</b> box — the activity log credits each change by name. Edits save to a <b>shared live database</b> and appear for everyone within a second. <b>Export .json</b> / <b>Copy MD</b> make a backup anytime.</div>
 
 <h2 class="sec"><span class="bar"></span>Deadlines &amp; milestones <span style="font-size:12px;font-weight:500;color:#94a3b8">— click a cell to edit, or add a row</span></h2>
-<div class="note" style="margin:0 0 10px">CCTS pilots are <b>rolling — no fixed submission deadline</b>. The one hard external date is <b>IRB within 90 days of award</b> or funds are forfeited.</div>
 <div id="deadlines"></div>
 
 <h2 class="sec"><span class="bar"></span>Meetings <span style="font-size:12px;font-weight:500;color:#94a3b8">— click a cell to edit, or add a row</span></h2>
@@ -93,17 +101,6 @@ table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
  <input id="decInput" placeholder="Add a decision…" style="flex:1">
  <button class="btn primary sm" id="decAdd">Add</button>
 </div>
-
-<h2 class="sec"><span class="bar"></span>Team documents <span style="font-size:12px;font-weight:500;color:#94a3b8">— add a link to your own</span></h2>
-<div class="note" style="margin-bottom:12px">Anyone can add a document: paste a <b>OneDrive/SharePoint share link</b> (UK sign-in; share with everyone at UK so it stays the latest) plus a name, and click <b>Add</b>. To actually <b>upload a file</b> so the whole team has it, drop it into the shared OneDrive project folder, then paste its share link here. Additions are shared live with the team and recorded in the activity log.</div>
-<div id="docs2"></div>
-<div class="addrow" style="border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);box-shadow:var(--shadow);margin-top:8px">
- <input id="docTitle" placeholder="Document name" style="flex:1">
- <input id="docUrl" placeholder="Paste link (https://… or OneDrive share link)" style="flex:2">
- <button class="btn primary sm" id="docAdd">Add</button>
-</div>
-
-<div class="note"><b>About this hosted page.</b> Task edits, decisions, team-document links, and the activity log are stored in a <b>shared Firebase database</b>, so the whole team sees the same <b>live</b> data — no more per-browser copies. Viewing is open to anyone with the link; <b>editing requires the team password</b> (click <b>Unlock to edit</b>). <b>Note:</b> anything typed into this page is publicly visible to anyone with the URL — keep sensitive details in the UK-only OneDrive files.</div>
 <footer>Live shared editor + dashboard for the Drones project • generated June 2026</footer>
 </div>
 <script>
