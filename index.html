@@ -58,7 +58,7 @@ table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head><body><div class="wrap">
 <div class="hero"><h1>Whole Blood Drone Delivery — Project Hub</h1>
-<p>Live shared hub — view-only for anyone with the link. To edit, click <b>Unlock to edit</b> (team password <b>drones</b>) and add your name in <b>Editing as</b>. Changes sync <b>live to everyone</b>.</p>
+<p>Live shared hub — view-only for anyone with the link. To edit, click <b>Unlock to edit</b> (team password is in the 6/23 email) and add your name in <b>Editing as</b>. Changes sync <b>live to everyone</b>.</p>
 <div class="meta" id="lastup">Updated by — no edits yet</div></div>
 
 <div class="cfgbanner" id="cfgmsg">Live sync is not configured yet — this page is showing an empty board. Paste your Firebase config into <code>index.html</code> to go live.</div>
@@ -344,7 +344,7 @@ var _du=document.getElementById("docUrl");if(_du)_du.onkeydown=function(e){if(e.
 document.getElementById("lockBtn").onclick=function(){
  if(!CONFIGURED||!auth){alert("Live sync is not configured yet.");return;}
  if(editorMode){auth.signOut();return;}
- var pw=prompt("Team edit password (shared — it's 'drones'):","drones");if(!pw)return;
+ var pw=prompt("Team edit password (this was shared in the body of the 6/23 email):");if(!pw)return;
  auth.signInWithEmailAndPassword(EDITOR_EMAIL,pw).catch(function(e){alert("Could not unlock: "+((e&&e.message)||e));});
 };
 
