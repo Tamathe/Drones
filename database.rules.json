@@ -2,7 +2,7 @@
   "rules": {
     "hub": {
       ".read": true,
-      ".write": "auth != null && auth.uid === 'PASTE_EDITOR_UID'"
+      ".write": "auth != null && auth.token.email === 'editor@drones.app'"
     }
   }
 }

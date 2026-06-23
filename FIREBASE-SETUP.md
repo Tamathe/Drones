@@ -15,16 +15,15 @@ data — no more per-browser copies. Viewing is open to anyone with the link;
    start in **Locked mode** (we set the rules in step 6).
 4. Left menu → **Build → Authentication → Get started → Email/Password → Enable → Save**.
 5. **Authentication → Users → Add user.** Email: `editor@drones.app` (use exactly
-   this), Password: **the team edit password** you want. Create it, then copy that
-   user's **User UID** (the long string in the Users table).
+   this), Password: **the team edit password** you want.
 6. **Realtime Database → Rules** tab → paste the contents of `database.rules.json`
-   (in this folder), replacing `PASTE_EDITOR_UID` with the UID from step 5 →
-   **Publish**.
+   (in this folder) → **Publish**. The rules grant public read and allow writes
+   only from the `editor@drones.app` login — no UID needed.
 
 ## What to send me
 
-- The **`firebaseConfig`** object (from step 2).
-- The **editor User UID** (from step 5), if you didn't paste the rules yourself in step 6.
+- The **`firebaseConfig`** object (from step 2). That's it — the rules key off the
+  editor's email, so there's no UID to copy.
 
 Then I drop the config into `index.html`, confirm the rules, merge this branch to
 `main`, and push. The first time you click **Unlock to edit** and enter the password,
