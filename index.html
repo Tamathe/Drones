@@ -51,6 +51,8 @@ td[contenteditable=true]:empty::before{content:"…";color:#cbd5e1}
 table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
 .secname[contenteditable=true]{cursor:text}
 .secname[contenteditable=true]:focus{background:#eef2f7;box-shadow:inset 0 0 0 1px #cbd5e1;border-radius:6px;outline:none}
+.secright{display:flex;align-items:center;gap:8px}
+.owner>summary .del{opacity:0}.owner>summary:hover .del{opacity:1}
 @media(max-width:560px){.wrap{padding:14px 12px 48px}.hero{padding:20px}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -58,7 +60,7 @@ table .del{opacity:.5;font-size:16px}table tr:hover .del{opacity:1}
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head><body><div class="wrap">
 <div class="hero"><h1>Whole Blood Drone Delivery — Project Hub</h1>
-<p>Live shared hub — view-only for anyone with the link. To edit, click <b>Unlock to edit</b> (team password is in the 6/23 email) and add your name in <b>Editing as</b>. Changes sync <b>live to everyone</b>.</p>
+<p>Live shared hub — view-only for anyone with the link. To edit, click <b>Unlock to edit</b> and add your name in <b>Editing as</b>. Changes sync <b>live to everyone</b>.</p>
 <div class="meta" id="lastup">Updated by — no edits yet</div></div>
 
 <div class="cfgbanner" id="cfgmsg">Live sync is not configured yet — this page is showing an empty board. Paste your Firebase config into <code>index.html</code> to go live.</div>
@@ -226,7 +228,12 @@ function render(){
    nm.onkeydown=function(e){e.stopPropagation();if(e.key==="Enter"){e.preventDefault();nm.blur();}};
   }
   var cnt=document.createElement("span");cnt.className="count";
-  sum.appendChild(nm);sum.appendChild(cnt);d.appendChild(sum);
+  var right=document.createElement("span");right.className="secright";right.appendChild(cnt);
+  if(editorMode){var delS=document.createElement("button");delS.className="del";delS.innerHTML="&times;";delS.title="Remove this person";
+   delS.onmousedown=function(e){e.stopPropagation();};
+   delS.onclick=function(e){e.stopPropagation();e.preventDefault();if(confirm('Remove "'+sec.owner+'" and all of their tasks?')){var u={};u["hub/sections/"+sec.id]=null;Object.keys(tasks).forEach(function(tid){if(tasks[tid].sid===sec.id)u["hub/tasks/"+tid]=null;});db.ref().update(u);logit("removed person",sec.owner);}};
+   right.appendChild(delS);}
+  sum.appendChild(nm);sum.appendChild(right);d.appendChild(sum);
   var box=document.createElement("div");box.className="tlist";
   mine.forEach(function(item){
    var tid=item.id,t=item.o;total++;if(t.d){done++;sdone++;}
@@ -248,6 +255,9 @@ function render(){
   add.appendChild(inp);add.appendChild(ab);box.appendChild(add);d.appendChild(box);root.appendChild(d);
   if(cnt)cnt.textContent=sdone+"/"+mine.length;
  });
+ var addP=document.createElement("button");addP.className="btn sm editoronly";addP.textContent="+ Add person";addP.style.margin="4px 0 2px";
+ addP.onclick=function(){var nm=prompt("Add a person / section (name):");nm=(nm||"").trim();if(!nm)return;var sid=db.ref("hub/sections").push().key;db.ref("hub/sections/"+sid).set({owner:nm,order:Date.now()});logit("added person",nm);};
+ root.appendChild(addP);
  var pct=total?Math.round(done/total*100):0;
  var fill=document.getElementById("fill");if(fill)fill.style.width=pct+"%";
  var plbl=document.getElementById("plbl");if(plbl)plbl.textContent=done+" of "+total+" done ("+pct+"%)";
